@@ -3,6 +3,8 @@
 
 
 Alembic + SQLAlchemy setup
+https://alembic.sqlalchemy.org/en/latest/tutorial.html#create-a-migration-script
+
 1. Adicionar depencencias no v-env.
     poetry add sqlalchemy
     poetry add alembic
@@ -43,3 +45,7 @@ Alguma classe deve definir explicitamente um objeto Base (criado a partir da fun
 
 8. Aplicar as migrations criadas no banco
     alembic upgrade heads
+
+Extra. Rollback changes by invoking downgrade() on each migration
+    alembic downgrade base
+    * Assumes a implemented downgrade() method and returns the schema to the original state
