@@ -11,3 +11,7 @@ class User(Base):
     name = Column(String, nullable=False)
     birth = Column(DateTime, nullable=False)
     created = Column(DateTime, default=datetime.now)
+    fav_food = Column(String, nullable=False)
+
+    def __repr__(self):
+        return f'{self.name} nasceu em [{self.birth}] e gosta de ao mossar {self.fav_food}'

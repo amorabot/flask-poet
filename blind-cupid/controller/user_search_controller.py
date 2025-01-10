@@ -1,6 +1,9 @@
 from utils import url_argument_validator as url_val
 from flask import Flask, request,Response,jsonify
 
+from model.user import user_repository
+from model.models import User
+
 def setup(app:Flask)->None:
 
     @app.route('/search', methods=['GET'])
@@ -22,3 +25,19 @@ def setup(app:Flask)->None:
         #https://flask.palletsprojects.com/en/stable/quickstart/#about-responses
         return response_json, 200
         # return Response(response_json, status=200, mimetype='application/json')
+
+    
+    @app.route('/user', methods=['GET'])
+    def get_all_users()->Response:
+        users: list[User] = user_repository.get_all_users()
+        return {
+            "users": stringify_users(users)
+        }, 200
+    
+
+
+def stringify_users(users: list[User])->list[str]:
+    stringified_users=[]
+    for user in users:
+        stringified_users.append(user.__repr__())
+    return stringified_users

@@ -1,6 +1,6 @@
 from flask import Flask
 from routes import routes
-import sqlite3
+from model.user import user_repository
 
 app = Flask(__name__)
 
@@ -8,6 +8,12 @@ app = Flask(__name__)
 def serve_root():
     return app.send_static_file('index.html')
 
+
+@app.route('/template/<username>')
+def create_template(username:str):
+    print(f'{username} requested the creation of template users.')
+    user_repository.create_template_users()
+    return "Success!",200
 
 #Test route!
 @app.route('/<name>')
