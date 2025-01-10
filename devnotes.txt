@@ -1,0 +1,45 @@
+
+
+
+
+Alembic + SQLAlchemy setup
+1. Adicionar depencencias no v-env.
+    poetry add sqlalchemy
+    poetry add alembic
+
+2. Aplicar/instalar as depencencias no ambiente
+    poetry install
+
+3. Inicializar a estrutura de arquivos do alembic (suporte à migrations)
+    alembic init migrations
+
+4. Definir a URL da database utilizada no projeto em alembic.ini (SQLite, localmente)
+    ...
+    sqlalchemy.url = sqlite:///template.db
+    ...
+
+5. Definir a variável de metadata no arquivo env.py (Requer o objeto *Base*, elemento root de qualquer modelo SQL no SQLAlchemy)
+Alguma classe deve definir explicitamente um objeto Base (criado a partir da função declarative_base() do sqlalchemy), que deve ser importado
+    # add your model's MetaData object here
+    # for 'autogenerate' support
+    from model import models
+    target_metadata = models.Base.metadata
+        |
+        | (models.py)
+        |
+        ----> from sqlalchemy.orm import declarative_base
+              Base = declarative_base()
+              ...
+
+6. Definir as classes de modelo (Devem herdar de *Base*)
+    class DemoUser(Base):
+        __tablename__ = 'demo'
+
+        id = Column(Integer, primary_key=True)
+        ...
+
+7. Criar a migration que reflita as mudanças feitas
+    alembic revision --autogenerate -m "Any changes that were made"
+
+8. Aplicar as migrations criadas no banco
+    alembic upgrade heads
